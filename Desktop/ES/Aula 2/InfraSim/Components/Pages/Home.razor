@@ -1,5 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@using InfraSim.Services
 
 <PageTitle>Home</PageTitle>
 
@@ -9,15 +10,26 @@
 <button @onclick="StartIncrementing">Start</button>
 
 @code {
-    private int Counter = 0;
+    private UserCounter userCounter = new UserCounter();
+    private int Counter => userCounter.Counter;
 
-    protected async Task StartIncrementing()
+    protected override void OnInitialized()
     {
-        while (Counter < 100)
-        {
-            Counter++;
-            StateHasChanged();
-            await Task.Delay(100);
-        }
+        userCounter.OnCounterChanged += UpdateUI;
+    }
+
+    private async Task StartIncrementing()
+    {
+        await userCounter.StartIncrementing();
+    }
+
+    private void UpdateUI()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        userCounter.OnCounterChanged -= UpdateUI;
     }
 }
