@@ -4,4 +4,17 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<p>Contador: @Counter</p>
+<button @onclick="IncrementarContador">Start</button>
+
+@code {
+    private int Counter = 0;
+
+    private void IncrementarContador()
+    {
+        if (Counter < 100)
+        {
+            Counter++;
+        }
+    }
+}
