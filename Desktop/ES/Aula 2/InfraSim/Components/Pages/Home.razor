@@ -1,20 +1,23 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 <p>Contador: @Counter</p>
-<button @onclick="IncrementarContador">Start</button>
+<button @onclick="StartIncrementing">Start</button>
 
 @code {
     private int Counter = 0;
 
-    private void IncrementarContador()
+    protected async Task StartIncrementing()
     {
-        if (Counter < 100)
+        while (Counter < 100)
         {
             Counter++;
+            StateHasChanged();
+            await Task.Delay(100);
         }
     }
 }
